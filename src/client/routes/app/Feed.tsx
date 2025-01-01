@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import PostProps, { AllPostProps } from "../../@types/Post";
+import PostProps, { AllPostProps, ImagePostProps } from "../../@types/Post";
 import PostCard from "../../components/PostCards";
 import { FaBookmark, FaMessage, FaPeopleGroup } from "react-icons/fa6";
 import PostViewer from "../../components/PostViewer";
 import { useCallback, useEffect, useState } from "react";
+import PostImageViewer from "../../components/PostImageViewer";
 
 const posts = [
     {
@@ -184,7 +185,18 @@ const posts = [
         },
         data: {
             text: "Pair programming: Two brains, one keyboard, endless arguments.",
-            images: ["/img-3.webp", "/img-2.jpg"]
+            images: [
+                "/img-3.webp",
+                "/img-2.jpg",
+                "/img-3.webp",
+                "/img-2.jpg",
+                "/img-3.webp",
+                "/img-2.jpg",
+                "/img-3.webp",
+                "/img-2.jpg",
+                "/img-3.webp",
+                "/img-3.webp"
+            ]
         }
     }
 ];
@@ -213,20 +225,25 @@ const posts = [
  */
 function Feed() {
     const [postToView, setPostToView] = useState<AllPostProps | null>(null);
-    const closePostViewOnPopstate = useCallback(
-        (e: PopStateEvent) => {
-            postToView && setPostToView(null);
+    const [imagesToView, setImagesToView] = useState<string[] | null>(null);
+    const [imageToViewIndex, setImageToViewIndex] = useState<number>(0);
+    const closeViewersOnPopstate = useCallback(
+        (e: HashChangeEvent) => {
+            const hash = window.location.hash;
+
+            if (imagesToView && hash !== "#openImageViewer") setImagesToView(null), setImageToViewIndex(0);
+            else if (postToView && hash !== "#openPostViewer") setPostToView(null);
         },
-        [postToView]
+        [postToView, imagesToView]
     );
 
     useEffect(() => {
-        window.addEventListener("popstate", closePostViewOnPopstate);
+        window.addEventListener("hashchange", closeViewersOnPopstate);
 
         return () => {
-            window.removeEventListener("popstate", closePostViewOnPopstate);
+            window.removeEventListener("hashchange", closeViewersOnPopstate);
         };
-    }, [closePostViewOnPopstate]);
+    }, [closeViewersOnPopstate]);
 
     return (
         <div className="bg-zinc-100 p-4 max-lg:p-0 dark:bg-black ">
@@ -281,7 +298,13 @@ function Feed() {
                         </Link>
                     </div>
                     {posts.map((post) => (
-                        <PostCard key={post.id} {...(post as AllPostProps)} setPostToView={setPostToView} />
+                        <PostCard
+                            key={post.id}
+                            {...(post as AllPostProps)}
+                            setImageToViewIndex={setImageToViewIndex}
+                            setImagesToView={setImagesToView}
+                            setPostToView={setPostToView}
+                        />
                     ))}
                 </main>
                 {/* Main */}
@@ -289,6 +312,7 @@ function Feed() {
             {postToView && (
                 <PostViewer setPostToView={setPostToView} {...(postToView as Omit<PostProps, "setPostToView">)} />
             )}
+            {imagesToView && <PostImageViewer currentImageIndex={imageToViewIndex} imagesToView={imagesToView} />}
         </div>
     );
 }
