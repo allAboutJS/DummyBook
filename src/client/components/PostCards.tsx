@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
-import PostProps, { AllPostProps, ImagePostProps, PostContext, TextWithBackgroundPostProps } from "../@types/Post";
-import { FaComment, FaEllipsisVertical, FaShare, FaThumbsDown, FaThumbsUp } from "react-icons/fa6";
-import { createContext, useContext, useState } from "react";
+import { AllPostProps, PostContext } from "../@types/Post";
+import { createContext, useState } from "react";
+import PostCardHeader from "./PostCardHeader";
+import PostCardFooter from "./PostCardFooter";
+import CommentInput from "./CommentInput";
+import PostText from "./PostText";
+import PostImage from "./PostImage";
 
 /**
  * Creates a React context for managing post-related data and state.
@@ -9,249 +12,7 @@ import { createContext, useContext, useState } from "react";
  * @constant PostCtx - The context for sharing post data across components.
  * @default null (cast as unknown to match the expected type)
  */
-const PostCtx = createContext<PostContext>(null as unknown as PostContext);
-
-/**
- * Opens the post viewer by setting the current post to view and updating the URL hash.
- *
- * @param postToView - The post object to be viewed, or null if no post is selected.
- * @param setPostToView - A function to set the current post to view.
- */
-const openPostViewer = async (postToView: AllPostProps | null, setPostToView: PostProps["setPostToView"]) => {
-    setPostToView(postToView);
-    window.location.hash = "openPostViewer";
-};
-
-/**
- * Renders the header section of a post card.
- *
- * @param props - The author properties of the post.
- * @param props.avatarUrl - The URL of the author's avatar image.
- * @param props.fullname - The full name of the author.
- * @param props.id - The unique identifier of the author.
- * @param props.dateJoined - The date when the author joined the platform.
- * @returns A React component representing the post card header.
- */
-function PostCardHeader(props: PostProps["author"]) {
-    return (
-        <div className="flex items-center justify-between p-2">
-            <div className="flex items-center gap-2">
-                <img className="h-10 w-10 rounded-full bg-zinc-300" src={props.avatarUrl} alt={props.fullname} />
-                <div>
-                    <Link to={`/app/user/${props.id}`} className="text-base font-semibold hover:underline">
-                        {props.fullname}
-                    </Link>
-                    <p className="text-sm text-zinc-400">Joined {props.dateJoined.toDateString()}</p>
-                </div>
-            </div>
-            <div className="flex gap-2">
-                <button className="dark:bg-zinc-600 bg-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-xs font-semibold py-1 px-2 rounded-md">
-                    Add friend
-                </button>
-                <button className="h-8 w-8 rounded-full dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center justify-center">
-                    <FaEllipsisVertical />
-                </button>
-            </div>
-        </div>
-    );
-}
-
-/**
- * Renders the footer section of a post card, displaying interaction buttons and counts.
- *
- * @param props - The impression properties of the post.
- * @param props.likes - The number of likes for the post.
- * @param props.dislikes - The number of dislikes for the post.
- * @param props.comments - The number of comments on the post.
- * @param props.shares - The number of times the post has been shared.
- * @returns A React component representing the post card footer with interaction buttons and counts.
- */
-function PostCardFooter(props: PostProps["impressions"]) {
-    const { setCommentInputVisibility } = useContext(PostCtx);
-
-    return (
-        <div className="text-sm grid grid-cols-3 px-4 py-2">
-            <div className="flex items-center gap-1">
-                <button className="p-2 rounded-md dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center gap-1">
-                    <FaThumbsUp /> {props.likes}
-                </button>
-                <button className="p-2 rounded-md dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center gap-1">
-                    <FaThumbsDown /> {props.dislikes}
-                </button>
-            </div>
-            <button
-                onClick={() => setCommentInputVisibility(true)}
-                className="p-2 rounded-md dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center gap-1 justify-center"
-            >
-                <FaComment /> {props.comments}
-            </button>
-            <div className="flex justify-end">
-                <button className="p-2 rounded-md dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center gap-1">
-                    <FaShare /> {props.shares}
-                </button>
-            </div>
-        </div>
-    );
-}
-
-/**
- * Renders a comment input form for users to write and submit comments.
- *
- * @returns A React component representing a comment input field with a submit button.
- */
-function CommentInput() {
-    return (
-        <form className="p-2 flex text-sm gap-2">
-            <input
-                className="p-2 rounded-md dark:bg-zinc-600 bg-zinc-200 w-full outline-none"
-                type="text"
-                autoFocus
-                placeholder="Write a comment..."
-            />
-            <button className="py-2 px-4 rounded-md dark:bg-zinc-600 dark:hover:bg-zinc-700 bg-zinc-300 hover:bg-zinc-200 font-semibold">
-                Post
-            </button>
-        </form>
-    );
-}
-
-/**
- * Renders a text-based post card with customizable styling and click behavior.
- *
- * @component
- * @param props - The props object.
- * @param props.data - The data content of the post.
- * @param props.styling - Styling properties for the post.
- * @param props.styling.foreground - Text color for the post.
- * @param props.styling.background - Background color for the post.
- * @param props.id - Unique identifier for the post.
- * @param props.setPostToView - Function to set the current post to view.
- * @returns A styled paragraph element representing the text post card.
- */
-function TextPostCard(
-    props: Pick<TextWithBackgroundPostProps, "data" | "styling" | "id"> & {
-        setPostToView: PostProps["setPostToView"];
-    }
-) {
-    const { postToView } = useContext(PostCtx);
-
-    return props.styling?.foreground && props.styling?.background ? (
-        <p
-            onClick={() => openPostViewer(postToView, props.setPostToView)}
-            style={{
-                backgroundColor: props.styling.background,
-                color: props.styling.foreground
-            }}
-            className="py-6 px-4 text-lg font-semibold text-center min-h-40 flex justify-center items-center cursor-pointer"
-        >
-            {props.data}
-        </p>
-    ) : (
-        <p onClick={() => openPostViewer(postToView, props.setPostToView)} className="p-4 font-semibold cursor-pointer">
-            {props.data}
-        </p>
-    );
-}
-
-/**
- * Renders an image post card, displaying text and a grid of images based on the number of images provided.
- *
- * @param props - The properties of the image post.
- * @param props.text - Optional text content to display above the images.
- * @param props.images - An array of image URLs to display in the post. The layout changes based on the number of images.
- * @returns A React component representing the image post card with text and images.
- */
-function ImagePostCard(props: ImagePostProps["data"] & { setPostToView: PostProps["setPostToView"] }) {
-    const { text, images, setPostToView } = props;
-    const { postToView, setImageToViewIndex, setImagesToView } = useContext(PostCtx);
-    const openImageViewer = async (index: number) => {
-        document.location.hash = "openImageViewer";
-        setImageToViewIndex(index);
-        setImagesToView(images);
-    };
-
-    return (
-        <div>
-            {text && (
-                <p onClick={() => openPostViewer(postToView, setPostToView)} className="px-4 py-2 pt-4 cursor-pointer">
-                    {text}
-                </p>
-            )}
-            <div className="min-h-fit overflow-hidden">
-                {images.length === 1 ? (
-                    <img
-                        onClick={() => openImageViewer(0)}
-                        className="object-cover w-full h-full"
-                        src={images[0]}
-                        alt="Post illustration"
-                    />
-                ) : images.length === 2 ? (
-                    <div className="grid grid-cols-2">
-                        <img
-                            onClick={() => openImageViewer(0)}
-                            className="object-cover w-full h-full"
-                            src={images[0]}
-                            alt="Post illustration"
-                        />
-                        <img
-                            onClick={() => openImageViewer(1)}
-                            className="object-cover w-full h-full"
-                            src={images[1]}
-                            alt="Post illustration"
-                        />
-                    </div>
-                ) : images.length === 3 ? (
-                    <div className="grid grid-cols-2">
-                        <img
-                            onClick={() => openImageViewer(0)}
-                            className="object-cover w-full h-full"
-                            src={images[0]}
-                            alt="Post illustration"
-                        />
-                        <div className="grid grid-rows-2">
-                            <img
-                                onClick={() => openImageViewer(1)}
-                                className="object-cover w-full h-full"
-                                src={images[1]}
-                                alt="Post illustration"
-                            />
-                            <img
-                                onClick={() => openImageViewer(2)}
-                                className="object-cover w-full h-full"
-                                src={images[2]}
-                                alt="Post illustration"
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    // More than 3 images, display a thumbnail grid
-                    <div className="grid grid-cols-2">
-                        <img
-                            onClick={() => openImageViewer(0)}
-                            className="object-cover w-full h-full"
-                            src={images[0]}
-                            alt="Post illustration"
-                        />
-                        <div className="grid grid-rows-2">
-                            <img
-                                onClick={() => openImageViewer(1)}
-                                className="object-cover w-full h-full"
-                                src={images[1]}
-                                alt="Post illustration"
-                            />
-                            <div onClick={() => openImageViewer(2)} className="relative text-zinc-50">
-                                <img className="object-cover w-full h-full" src={images[2]} alt="Post illustration" />
-                                <div className="absolute inset-0 bg-black/50 text-2xl font-bold flex items-center justify-center">
-                                    +{images.length - 3}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
+export const PostCtx = createContext<PostContext>(null as unknown as PostContext);
 
 /**
  * Renders a post card component, which can display either a text post or an image post,
@@ -277,9 +38,9 @@ function PostCard(props: AllPostProps) {
                 value={{ postToView: props, setCommentInputVisibility, setImageToViewIndex, setImagesToView }}
             >
                 {props.type !== "text_only" ? (
-                    <ImagePostCard setPostToView={props.setPostToView} {...props.data} />
+                    <PostImage setPostToView={props.setPostToView} {...props.data} />
                 ) : (
-                    <TextPostCard
+                    <PostText
                         setPostToView={props.setPostToView}
                         id={props.id}
                         data={props.data}
