@@ -184,7 +184,12 @@ function TextPostCard(
  */
 function ImagePostCard(props: ImagePostProps["data"] & { setPostToView: PostProps["setPostToView"] }) {
     const { text, images, setPostToView } = props;
-    const { postToView } = useContext(PostCtx);
+    const { postToView, setImageToViewIndex, setImagesToView } = useContext(PostCtx);
+    const openImageViewer = async (index: number) => {
+        document.location.hash = "openImageViewer";
+        setImageToViewIndex(index);
+        setImagesToView(images);
+    };
 
     return (
         <div>
@@ -195,27 +200,67 @@ function ImagePostCard(props: ImagePostProps["data"] & { setPostToView: PostProp
             )}
             <div className="min-h-fit overflow-hidden">
                 {images.length === 1 ? (
-                    <img className="object-cover w-full h-full" src={images[0]} alt="Post illustration" />
+                    <img
+                        onClick={() => openImageViewer(0)}
+                        className="object-cover w-full h-full"
+                        src={images[0]}
+                        alt="Post illustration"
+                    />
                 ) : images.length === 2 ? (
                     <div className="grid grid-cols-2">
-                        <img className="object-cover w-full h-full" src={images[0]} alt="Post illustration" />
-                        <img className="object-cover w-full h-full" src={images[1]} alt="Post illustration" />
+                        <img
+                            onClick={() => openImageViewer(0)}
+                            className="object-cover w-full h-full"
+                            src={images[0]}
+                            alt="Post illustration"
+                        />
+                        <img
+                            onClick={() => openImageViewer(1)}
+                            className="object-cover w-full h-full"
+                            src={images[1]}
+                            alt="Post illustration"
+                        />
                     </div>
                 ) : images.length === 3 ? (
                     <div className="grid grid-cols-2">
-                        <img className="object-cover w-full h-full" src={images[0]} alt="Post illustration" />
+                        <img
+                            onClick={() => openImageViewer(0)}
+                            className="object-cover w-full h-full"
+                            src={images[0]}
+                            alt="Post illustration"
+                        />
                         <div className="grid grid-rows-2">
-                            <img className="object-cover w-full h-full" src={images[1]} alt="Post illustration" />
-                            <img className="object-cover w-full h-full" src={images[2]} alt="Post illustration" />
+                            <img
+                                onClick={() => openImageViewer(1)}
+                                className="object-cover w-full h-full"
+                                src={images[1]}
+                                alt="Post illustration"
+                            />
+                            <img
+                                onClick={() => openImageViewer(2)}
+                                className="object-cover w-full h-full"
+                                src={images[2]}
+                                alt="Post illustration"
+                            />
                         </div>
                     </div>
                 ) : (
                     // More than 3 images, display a thumbnail grid
                     <div className="grid grid-cols-2">
-                        <img className="object-cover w-full h-full" src={images[0]} alt="Post illustration" />
+                        <img
+                            onClick={() => openImageViewer(0)}
+                            className="object-cover w-full h-full"
+                            src={images[0]}
+                            alt="Post illustration"
+                        />
                         <div className="grid grid-rows-2">
-                            <img className="object-cover w-full h-full" src={images[1]} alt="Post illustration" />
-                            <div className="relative">
+                            <img
+                                onClick={() => openImageViewer(1)}
+                                className="object-cover w-full h-full"
+                                src={images[1]}
+                                alt="Post illustration"
+                            />
+                            <div onClick={() => openImageViewer(2)} className="relative text-zinc-50">
                                 <img className="object-cover w-full h-full" src={images[2]} alt="Post illustration" />
                                 <div className="absolute inset-0 bg-black/50 text-2xl font-bold flex items-center justify-center">
                                     +{images.length - 3}
@@ -244,11 +289,14 @@ function ImagePostCard(props: ImagePostProps["data"] & { setPostToView: PostProp
  */
 function PostCard(props: AllPostProps) {
     const [isCommentInputVisible, setCommentInputVisibility] = useState<boolean>(props.showCommentInPut || false);
+    const { setImageToViewIndex, setImagesToView } = props;
 
     return (
         <div className="bg-white shadow-sm rounded-md max-[526px]:rounded-none dark:bg-zinc-800 ">
             <PostCardHeader {...props.author} />
-            <PostCtx.Provider value={{ postToView: props, setCommentInputVisibility }}>
+            <PostCtx.Provider
+                value={{ postToView: props, setCommentInputVisibility, setImageToViewIndex, setImagesToView }}
+            >
                 {props.type !== "text_only" ? (
                     <ImagePostCard setPostToView={props.setPostToView} {...props.data} />
                 ) : (
