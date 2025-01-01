@@ -202,31 +202,17 @@ const posts = [
 ];
 
 /**
- * Renders the main feed view, displaying a list of posts, navigation links, and a modal for viewing individual posts.
- *
- * The component manages the state for viewing a specific post and handles browser navigation events
- * to close the post viewer when the user navigates back.
- *
- * **State Management:**
- * - `postToView`: Tracks the currently selected post for detailed viewing.
- *
- * **Event Handling:**
- * - Listens to the `popstate` event to close the post viewer when the browser's back button is pressed.
- *
- * **Layout Structure:**
- * - **Aside:** Provides navigation links for the user profile, messages, bookmarks, and friends.
- * - **Main:** Displays a list of posts and an input box for creating a new post.
- * - **Post Viewer Modal:** Opens when a specific post is selected.
- *
- * **Effects:**
- * - Attaches and removes the `popstate` event listener during component mount and unmount.
- *
- * @returns The feed interface with navigation, post list, and modal for detailed post viewing.
+ * The Feed component is responsible for rendering the main content of the user's feed.
+ * It fetches and displays posts, allowing the user to view and interact with them.
+ * The component supports image and post viewers, allowing users to view media and details in full-screen mode.
+ * The `setPostToView` and `setImagesToView` functions are used to manage which post and images to view in the modal view.
+ * It also includes an aside section for navigation links to the user's profile, messages, bookmarks, and friends.
  */
 function Feed() {
     const [postToView, setPostToView] = useState<AllPostProps | null>(null);
     const [imagesToView, setImagesToView] = useState<string[] | null>(null);
     const [imageToViewIndex, setImageToViewIndex] = useState<number>(0);
+
     const closeViewersOnPopstate = useCallback(
         (e: HashChangeEvent) => {
             const hash = window.location.hash;
@@ -239,10 +225,7 @@ function Feed() {
 
     useEffect(() => {
         window.addEventListener("hashchange", closeViewersOnPopstate);
-
-        return () => {
-            window.removeEventListener("hashchange", closeViewersOnPopstate);
-        };
+        return () => window.removeEventListener("hashchange", closeViewersOnPopstate);
     }, [closeViewersOnPopstate]);
 
     return (

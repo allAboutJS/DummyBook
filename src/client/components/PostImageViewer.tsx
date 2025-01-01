@@ -2,6 +2,14 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useState } from "react";
 import PostImageViewerProps from "../@types/PostImageViewer";
 
+/**
+ * Renders an image viewer component for browsing a collection of images with navigation controls.
+ *
+ * @param props - The properties for the image viewer.
+ * @param props.currentImageIndex - The index of the currently displayed image.
+ * @param props.imagesToView - An array of image URLs available for viewing.
+ * @returns A React component that displays an image viewer with navigation controls and thumbnails.
+ */
 function PostImageViewer(props: PostImageViewerProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(props.currentImageIndex);
 

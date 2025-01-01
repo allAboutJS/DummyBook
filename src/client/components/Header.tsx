@@ -3,29 +3,9 @@ import Logo from "./Logo";
 import { FaBars, FaBell, FaHouse, FaMessage, FaPeopleGroup } from "react-icons/fa6";
 
 /**
- * Renders the main header of the application.
+ * Renders the main header component for the application, including navigation links, search, and user profile.
  *
- * This component provides a navigation bar with core functionalities such as search, navigation links,
- * and user profile access. It adapts to different screen sizes with responsive styles and supports
- * dark mode.
- *
- * **Structure:**
- * - **Logo and Search Bar:** Displays the application logo and a search input placeholder.
- * - **Navigation Links:** Provides quick access to Home, Friends, Messages, and Notifications.
- * - **User Profile:** Shows the user's avatar and name on larger screens.
- *
- * **Behavior:**
- * - A menu button (`FaBars`) appears on smaller screens for mobile navigation.
- * - Clicking the logo triggers dark mode by adding the `"dark"` class to the document root.
- *
- * **Accessibility:**
- * - Each navigation link includes an `aria-label` for screen readers.
- *
- * **Styling:**
- * - Sticky positioning keeps the header fixed at the top of the viewport.
- * - Responsive design adjusts layouts and visibility across different screen sizes.
- *
- * @returns A header containing the logo, search input, navigation links, and user profile section.
+ * @returns A React component representing the application's header with navigation and interactive elements.
  */
 function Header() {
     return (

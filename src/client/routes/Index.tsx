@@ -8,6 +8,13 @@ import { toast } from "sonner";
 import { useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * The Index component is responsible for handling user registration.
+ * It renders a form for users to create a new account by entering their full name, email, password, and confirm password.
+ * The form submission is handled by the `submitForm` function, which sends a POST request to the server's registration API.
+ * If the registration is successful, the user is redirected to the login page.
+ * If there are any errors during the registration process, appropriate error messages are displayed using the `toast` library.
+ */
 function Index() {
     const navigate = useNavigate();
     const {

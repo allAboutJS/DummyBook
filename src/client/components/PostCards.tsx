@@ -4,17 +4,10 @@ import { FaComment, FaEllipsisVertical, FaShare, FaThumbsDown, FaThumbsUp } from
 import { createContext, useContext, useState } from "react";
 
 /**
- * Context for managing post-related data and state across the application.
+ * Creates a React context for managing post-related data and state.
  *
- * This context provides access to post-related information and functionalities, allowing components
- * to share and consume post data without prop drilling.
- *
- * **Default Value:**
- * - Initialized with a `null` value cast as `any` to satisfy TypeScript type requirements.
- *
- * **Intended Use:**
- * - Should be used with a `PostCtx.Provider` to supply a valid context value.
- * - Consumers can access post-related data and methods via `useContext(PostCtx)`.
+ * @constant PostCtx - The context for sharing post data across components.
+ * @default null (cast as unknown to match the expected type)
  */
 const PostCtx = createContext<PostContext>(null as unknown as PostContext);
 
@@ -102,23 +95,9 @@ function PostCardFooter(props: PostProps["impressions"]) {
 }
 
 /**
- * Renders an input form for adding a comment.
+ * Renders a comment input form for users to write and submit comments.
  *
- * This component provides a text input field and a submission button, enabling users to write and post comments.
- *
- * **Behavior:**
- * - The text input is automatically focused when the component mounts (`autoFocus`).
- * - The input field allows users to type comments with an outlined style for better focus visibility.
- * - The submit button is styled with hover effects for better user interaction.
- *
- * **Structure:**
- * - **Input Field:** A single-line text input for entering a comment.
- * - **Button:** Triggers the submission of the comment.
- *
- * **Styling:**
- * - Applies responsive and theme-aware (`dark` mode) styles for both the input field and button.
- *
- * @returns A form with a text input and a submit button for posting comments.
+ * @returns A React component representing a comment input field with a submit button.
  */
 function CommentInput() {
     return (

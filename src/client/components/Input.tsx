@@ -2,36 +2,30 @@ import { useRef } from "react";
 import InputProps from "../@types/Input";
 
 /**
- * Renders an enhanced input field with support for validation, labels, and error messages.
+ * Renders a customizable input field with optional validation, labeling, and error messaging.
  *
- * This component integrates seamlessly with form libraries like `react-hook-form` using the `register` prop.
- * It offers dynamic behaviors such as floating labels, error messages, and customizable validation rules.
+ * @param props - The properties for the input component.
+ * @param props.name - The name of the input field.
+ * @param props.label - The label text displayed alongside the input field.
+ * @param props.placeholder - The placeholder text displayed inside the input field.
+ * @param props.disabled - A boolean indicating whether the input is disabled.
+ * @param props.required - A boolean indicating whether the input is required.
+ * @param props.customPattern - A custom regex pattern for input validation.
+ * @param props.errorMessages - An object containing custom error messages.
+ * @param props.errorMessages.empty - Message displayed when the input is empty but required.
+ * @param props.errorMessages.invalid - Message displayed when the input doesn't match the pattern.
+ * @param props.errors - Validation errors object, usually from a form library.
+ * @param props.register - A function for registering the input with a React Hook Form.
+ * @param props.id - The unique identifier for the input field.
+ * @returns A React component representing an enhanced input field with validation, error handling, and dynamic labeling.
  *
- * **Props:**
- * - **name** *(string)*: The name of the input field (used for form handling).
- * - **label** *(string | undefined)*: The label displayed for the input field.
- * - **placeholder** *(string | undefined)*: The placeholder text shown when no value is entered.
- * - **disabled** *(boolean | undefined)*: Disables the input if set to `true`.
- * - **required** *(boolean | undefined)*: Marks the field as required.
- * - **custom-pattern** *(string | undefined)*: A regex string for custom validation patterns.
- * - **errorMessages** *(object | undefined)*:
- *   - **empty** *(string | undefined)*: Error message when the field is empty but required.
- *   - **invalid** *(string | undefined)*: Error message when the input doesn't match the validation pattern.
- * - **register** *(function | undefined)*: Function from `react-hook-form` for form registration.
- * - **errors** *(Record<string, FieldError> | undefined)*: Object containing field validation errors.
- * - **id** *(string | undefined)*: Unique identifier for the input element.
- *
- * **Behavior:**
- * - If `register` is provided, the input integrates with form validation.
- * - Floating label behavior when focused or valid.
- * - Displays error messages below the input field if validation fails.
- *
- * **Styling:**
- * - The floating label moves above the input when the field is focused or contains a valid value.
- * - Error messages are styled in red for visibility.
- *
- * @param props - The props for configuring the input component.
- * @returns A styled input field with optional label, validation, and error display.
+ * @description
+ * `Input` is a flexible input component designed for use in forms. It supports:
+ * - Dynamic validation with regex patterns.
+ * - Integration with React Hook Form via `register`.
+ * - Custom error messages for validation feedback.
+ * - A floating label design that animates based on focus and value state.
+ * - Clear error messages displayed below the input field.
  */
 function Input(props: InputProps) {
     const labelRef = useRef<HTMLLabelElement>(null);

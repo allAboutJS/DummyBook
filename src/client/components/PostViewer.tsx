@@ -4,12 +4,10 @@ import PostCard from "./PostCards";
 
 /**
  * Renders a detailed view of a post in a fullscreen modal.
- *
  * This component displays the content of a specific post with a header for navigation.
- * It allows users to go back to the previous view using the back button.
+ * It allows users to go back to the previous view using the back button without changing window location.
  *
  * @param props - The props include post data and a function to set the current post to view.
- *
  * @returns A fullscreen modal displaying the post details.
  */
 function PostViewer(
