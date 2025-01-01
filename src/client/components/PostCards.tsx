@@ -16,7 +16,7 @@ import { createContext, useContext, useState } from "react";
  * - Should be used with a `PostCtx.Provider` to supply a valid context value.
  * - Consumers can access post-related data and methods via `useContext(PostCtx)`.
  */
-const PostCtx = createContext<PostContext>(null as unknown as any);
+const PostCtx = createContext<PostContext>(null as unknown as PostContext);
 
 /**
  * Opens the post viewer by setting the current post to view and updating the URL hash.
@@ -24,9 +24,9 @@ const PostCtx = createContext<PostContext>(null as unknown as any);
  * @param postToView - The post object to be viewed, or null if no post is selected.
  * @param setPostToView - A function to set the current post to view.
  */
-const openPostViewer = (postToView: AllPostProps | null, setPostToView: PostProps["setPostToView"]) => {
+const openPostViewer = async (postToView: AllPostProps | null, setPostToView: PostProps["setPostToView"]) => {
     setPostToView(postToView);
-    window.location.hash = postToView?.id || "";
+    window.location.hash = "openPostViewer";
 };
 
 /**
