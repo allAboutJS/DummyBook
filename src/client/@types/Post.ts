@@ -1,5 +1,3 @@
-import { SetStateAction } from "react";
-
 interface PostProps {
     id: string;
     author: {
@@ -18,9 +16,9 @@ interface PostProps {
     };
     showReactionOptions?: boolean;
     showCommentInPut?: boolean;
-    setPostToView: React.Dispatch<
-        React.SetStateAction<((TextOnlyPostProps & TextWithBackgroundPostProps) | ImagePostProps) | null>
-    >;
+    setPostToView: React.Dispatch<React.SetStateAction<AllPostProps | null>>;
+    setImagesToView: React.Dispatch<React.SetStateAction<string[] | null>>;
+    setImageToViewIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface TextOnlyPostProps extends PostProps {
@@ -45,7 +43,9 @@ export interface ImagePostProps extends PostProps {
 
 export interface PostContext {
     postToView: AllPostProps | null;
-    setCommentInputVisibility: React.Dispatch<SetStateAction<boolean>>;
+    setCommentInputVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+    setImagesToView: PostProps["setImagesToView"];
+    setImageToViewIndex: PostProps["setImageToViewIndex"];
 }
 
 export type AllPostProps = (TextOnlyPostProps & TextWithBackgroundPostProps) | ImagePostProps;
