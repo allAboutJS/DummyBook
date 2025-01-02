@@ -86,17 +86,50 @@ function Index() {
                         errors={errors}
                         custom-pattern={/^([a-zA-Z0-9.\-]{3,}@[a-zA-Z0-9]{2,}).[a-zA-Z0-9]{2,}$/}
                         name="email"
+                        type="email"
                         label="Email"
                     />
                     <Input
                         required
                         register={register}
                         errors={errors}
+                        type="password"
                         name="password"
                         custom-pattern={/^.{6,}$/}
                         label="Password"
                     />
-                    <Input required register={register} errors={errors} name="c-password" label="Confirm password" />
+                    <Input
+                        required
+                        type="password"
+                        register={register}
+                        errors={errors}
+                        name="c-password"
+                        label="Confirm password"
+                    />
+                    <div className="flex items-center gap-4">
+                        <span className="flex items-center gap-1 accent-zinc-800">
+                            <input
+                                required
+                                {...register("gender")}
+                                type="radio"
+                                name="gender"
+                                id="g-male"
+                                value="Male"
+                            />{" "}
+                            <label htmlFor="g-male">Male</label>
+                        </span>
+                        <span className="flex items-center gap-1 accent-zinc-800">
+                            <input
+                                required
+                                {...register("gender")}
+                                type="radio"
+                                name="gender"
+                                id="g-female"
+                                value="Female"
+                            />{" "}
+                            <label htmlFor="g-female">Female</label>
+                        </span>
+                    </div>
                 </div>
                 <button
                     disabled={isSubmitting}
