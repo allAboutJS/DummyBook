@@ -43,7 +43,7 @@ function Login() {
                 if (error.isAxiosError) {
                     const { response } = error as AxiosError<{ message: string }>;
 
-                    if (response && (response.status === 400 || response.status === 404 || response.status === 403))
+                    if (response && (response.status === 404 || response.status === 401))
                         toast.error(response.data.message);
                     else toast.error("An error occurred while signing in. Please try again later.");
                 } else toast.error("An error occurred while signing in. Please try again later.");
@@ -76,6 +76,7 @@ function Login() {
                         custom-pattern={/^([a-zA-Z0-9.\-]{3,}@[a-zA-Z0-9]{2,}).[a-zA-Z0-9]{2,}$/}
                         name="email"
                         label="Email"
+                        type="email"
                     />
                     <Input
                         required
@@ -84,6 +85,7 @@ function Login() {
                         name="password"
                         custom-pattern={/^.+$/}
                         label="Password"
+                        type="password"
                     />
                 </div>
                 <button
@@ -96,12 +98,12 @@ function Login() {
                 <div className="text-sm text-center">
                     <p>
                         I don't have an account.{" "}
-                        <Link to={"/login"} className="text-zinc-500 font-semibold hover:underline">
+                        <Link to={"/"} className="text-zinc-500 font-semibold hover:underline">
                             Sign up
                         </Link>
                     </p>
                     <p>
-                        <Link to={"/login"} className="text-zinc-500 font-semibold hover:underline">
+                        <Link to={"/reset-password"} className="text-zinc-500 font-semibold hover:underline">
                             Forgot password?
                         </Link>
                     </p>
