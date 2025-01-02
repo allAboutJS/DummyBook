@@ -3,6 +3,7 @@ import Index from "./Index";
 import Login from "./Login";
 import Feed from "./app/Feed";
 import AppLayout from "./app/Layout";
+import CreatePost from "./app/Create";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 path: "/app/feed",
                 element: <Feed />
+            },
+            {
+                path: "/app/create",
+                element: <CreatePost />
             }
         ]
     }
