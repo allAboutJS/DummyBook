@@ -24,10 +24,7 @@ function PostCardHeader(props: PostProps["author"]) {
                     <p className="text-sm text-zinc-400">Joined {props.dateJoined.toDateString()}</p>
                 </div>
             </div>
-            <div className="flex gap-2">
-                <button className="dark:bg-zinc-600 bg-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-xs font-semibold py-1 px-2 rounded-md">
-                    Add friend
-                </button>
+            <div className="relative">
                 <button className="h-8 w-8 rounded-full dark:hover:bg-zinc-600 hover:bg-zinc-200 flex items-center justify-center">
                     <FaEllipsisVertical />
                 </button>
