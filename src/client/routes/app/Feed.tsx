@@ -5,6 +5,7 @@ import { FaBookmark, FaMessage, FaPeopleGroup } from "react-icons/fa6";
 import PostViewer from "../../components/PostViewer";
 import { useCallback, useEffect, useState } from "react";
 import PostImageViewer from "../../components/PostImageViewer";
+import { useSelector } from "react-redux";
 
 const posts = [
     {
@@ -212,6 +213,7 @@ function Feed() {
     const [postToView, setPostToView] = useState<AllPostProps | null>(null);
     const [imagesToView, setImagesToView] = useState<string[] | null>(null);
     const [imageToViewIndex, setImageToViewIndex] = useState<number>(0);
+    const user = useSelector((state: any) => state.auth.user);
 
     const closeViewersOnPopstate = useCallback(
         (e: HashChangeEvent) => {
@@ -237,10 +239,10 @@ function Feed() {
                         <Link to={"/app/me"} className="flex items-center gap-2">
                             <img
                                 className="w-8 h-8 rounded-full bg-zinc-300"
-                                src="https://example.com/avatar1.jpg"
+                                src={user.avatarImageUrl}
                                 alt="User Avatar"
                             />{" "}
-                            Oliver Gloria
+                            {user.fullname}
                         </Link>
                         <br />
                         <Link
@@ -268,11 +270,7 @@ function Feed() {
                 {/* Main */}
                 <main className="space-y-3 flex-1 max-w-lg m-auto">
                     <div className="flex items-center gap-2 bg-white p-4 rounded-md shadow-sm dark:bg-zinc-800 max-lg:rounded-t-none max-[526px]:rounded-none">
-                        <img
-                            className="w-8 h-8 rounded-full bg-zinc-300"
-                            src="https://example.com/avatar1.jpg"
-                            alt="User Avatar"
-                        />{" "}
+                        <img className="w-8 h-8 rounded-full bg-zinc-300" src={user.avatarImageUrl} alt="User Avatar" />{" "}
                         <Link
                             to={"/app/create"}
                             className="p-2 rounded bg-zinc-200 flex-1 text-sm text-zinc-500 dark:bg-zinc-500 dark:text-zinc-300"
