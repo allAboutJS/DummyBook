@@ -53,9 +53,6 @@ const postSchema = new mongoose.Schema<PostDocument>({
                 type: [String],
                 required: function () {
                     return this.type === "text_and_image";
-                },
-                validate: {
-                    validator: (value: any) => (Array.isArray(value) ? Boolean(value.length) : false)
                 }
             }
         }
