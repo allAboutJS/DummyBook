@@ -7,6 +7,8 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../store/slices/authSlice";
 
 /**
  * The Login component is responsible for handling user authentication.
@@ -16,6 +18,7 @@ import { Link, useNavigate } from "react-router-dom";
  * If there are any errors during the login process, appropriate error messages are displayed using the `toast` library.
  */
 function Login() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {
         register,
@@ -35,11 +38,12 @@ function Login() {
             try {
                 const response = await axios.post("/api/login", data);
 
-                if (response.status !== 200 || response.data.status !== "success") toast.error(response.data.message);
-                else toast.success(response.data.message), navigate("/app/feed");
+                toast.success("You've been logged in successfully");
+                dispatch(login(response.data.data));
+                localStorage.setItem("isAuthenticated", "true");
+                localStorage.setItem("authUser", JSON.stringify(response.data.data));
+                navigate("/app");
             } catch (error: any) {
-                console.error(error);
-
                 if (error.isAxiosError) {
                     const { response } = error as AxiosError<{ message: string }>;
 
