@@ -1,13 +1,15 @@
-import { PropsWithChildren } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header";
+import authorizeUser from "../../utils/authorizeUser";
 
 function AppLayout() {
     return (
-        <>
-            <Header />
-            <Outlet />
-        </>
+        authorizeUser() && (
+            <>
+                <Header />
+                <Outlet />
+            </>
+        )
     );
 }
 
