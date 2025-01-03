@@ -32,7 +32,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
         authToken = encrypt(JSON.stringify({ email, expires: new Date(Date.now() + 3_600_000) }));
         tokenExpiryDate = new Date(Date.now() + 3_600_000); // 1 hour
         res.cookie("auth", authToken, { httpOnly: true, secure: true, expires: tokenExpiryDate });
-        res.json({ status: "success", message: "Signed in successfully" });
+        res.json({ status: "success", data: { ...user.toJSON(), password: undefined } });
     } catch {
         res.status(500).json({ status: "failed", message: "An unexpected error occurred." });
     }
